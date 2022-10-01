@@ -2,28 +2,33 @@ import {abi,contractAddress} from "../constants.js";
 import { ethers } from "../ethers-5.6.esm.min.js";
 
 let listOfmembers = [];
+let latestMsg = "";
+
+
+
 
 await getMembers();
 
 
-    let l = listOfmembers.length;
+let l = listOfmembers.length;
 
-    let currentDiscussionPartner = "";  
-    for(let i=0; i<l; i++){
-        
-        if(document.getElementById(listOfmembers[i]) != null){
-            document.getElementById(listOfmembers[i]).onclick = (e)=>{
+let currentDiscussionPartner = "";  
+for(let i=0; i<l; i++){
+    
+    if(document.getElementById(listOfmembers[i]) != null){
+        document.getElementById(listOfmembers[i]).onclick = (e)=>{
 
-                currentDiscussionPartner = e.target.id;
-    
-                console.log(currentDiscussionPartner)
-                //testing this 
-    
-            }
+            currentDiscussionPartner = e.target.id;
+
+            console.log(currentDiscussionPartner)
+            //testing this 
 
         }
-        
+
     }
+    
+}
+
 
     
 setInterval(async ()=>{
@@ -35,28 +40,24 @@ setInterval(async ()=>{
             let element = document.getElementById(listOfmembers[i]);
     
                 if(listOfmembers[i] == currentDiscussionPartner){
-                    element.style.color = 'red';
+                    
+                    element.style.height = "2.5em"
+                    element.style.filter = "invert()"
+                    element.style.border = 'blue 4px solid';
+                    element.style.borderRadius = "50px";
+                    
                 }else{
                     element.style.color = 'black';
+                    element.style.height = "2.5em"
+                    element.style.filter = "invert()"
+                    element.style.border = 'white 2px solid';
+                    element.style.borderRadius = "50px";
                 }
 
         }
         
     }
 },100)
-
-
-
-
-
-await getDisscusionFrom();
-await getDisscusionTo();
-
-
-
-
-
-
 
 try{
     document.getElementById("send").onclick =async()=> {  
@@ -75,7 +76,7 @@ try{
 
 
 // working perfectly !! 
-export async function getMembers(){
+async function getMembers(){
 
     if (typeof window.ethereum !== "undefined") {
 
@@ -97,8 +98,9 @@ export async function getMembers(){
             listOfmembers.push(members[i])
             document.getElementById('members').innerHTML += `
             <button class="members" >
-                <div class="circle"></div> <h3 id=${members[i]}> ${members[i]} </h3>
-            </button>` 
+                    <img id=${members[i]} src="./avatar.png" id="avatar"> <h3> ${members[i]} </h3>
+                </button>
+            ` 
             
         }
         
@@ -115,11 +117,10 @@ export async function getMembers(){
 
 
 function getMsg(){
-    
     return document.getElementById("msg").value;
 }
 
-
+// this is working perfectly!!
 async function sendMessage(/*_from,_to,_msg*/){
 
     if (typeof window.ethereum !== "undefined") {
@@ -136,18 +137,26 @@ async function sendMessage(/*_from,_to,_msg*/){
         let signerAddr = await signer.getAddress()
         let signerName = await contract.addrToName(signerAddr)
 
-        // must be changed : 
-        await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
-        
+        // set the last msg:
+         
+
+        let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
+        await tx.wait()
+        //await getDisscusionFrom();
+        //await getDisscusionTo();
+
         console.log(signerName,"sending a message to ",currentDiscussionPartner)
+        latestMsg = getMsg();
         document.getElementById('msg').value = "";
+        console.log("the latest msg ================== ",latestMsg)
+        await getDisscusionFrom();
+        await getDisscusionTo();
         
         
     } catch (error) {
         console.log('error =====',error)
     }
-    await getDisscusionFrom();
-    await getDisscusionTo();
+    
     } else {
         connectButton.innerHTML = "Please install MetaMask"
     }
@@ -167,9 +176,9 @@ async function getDisscusionFrom(){
         const contract = new ethers.Contract(contractAddress, abi, signer)
     
     try {
-        let signerAddr = await signer.getAddress();
-        let signerName = await contract.addrToName(signerAddr)
-        let msg= await contract.getFullConversation(signerName,currentDiscussionPartner); 
+        let signerAddr  = await signer.getAddress();
+        let signerName  = await contract.addrToName(signerAddr)
+        let msg         = await contract.getFullConversation(signerName,currentDiscussionPartner); 
         
         console.log("msg from =", await msg)
      
@@ -177,10 +186,16 @@ async function getDisscusionFrom(){
         let l= msg.length;
    
         let final_msg = msg[l-1];
+        // this is to avoid keep sending the same last mail
         
         
-        document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
-    
+        if(final_msg.includes("undefined") || !final_msg.includes(latestMsg)){
+            document.getElementById('display_it').innerHTML += "";
+           
+        }else{
+            document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
+        }
+        
     } catch (error) {
         console.log('error =====',error)
       }
@@ -189,9 +204,10 @@ async function getDisscusionFrom(){
     }
 }
 async function getDisscusionTo(){
+
     if (typeof window.ethereum !== "undefined") {
 
-        console.log("getting discussion ...")
+        console.log("getting discussion to ...")
 
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         await provider.send('eth_requestAccounts', [])
@@ -199,9 +215,9 @@ async function getDisscusionTo(){
         const contract = new ethers.Contract(contractAddress, abi, signer)
     
     try {
-        let signerAddr = await signer.getAddress();
-        let signerName = await contract.addrToName(signerAddr)
-        let msg= await contract.getFullConversation(currentDiscussionPartner,signerName); //reverted
+        let signerAddr  = await signer.getAddress();
+        let signerName  = await contract.addrToName(signerAddr)
+        let msg         = await contract.getFullConversation(currentDiscussionPartner,signerName); //reverted
         
         console.log("msg to =", await msg)
      
@@ -210,8 +226,13 @@ async function getDisscusionTo(){
    
         let final_msg = msg[l-1];
         
+        if(final_msg.includes("undefined")|| ! final_msg.includes(latestMsg)){
+            document.getElementById('display_it').innerHTML += "";
+            
+        }else{
+            document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
+        }
         
-        document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
     
     } catch (error) {
         console.log('error =====',error)

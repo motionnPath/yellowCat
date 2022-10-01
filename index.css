@@ -1,4 +1,5 @@
 *{
+    scrollbar-width: none;
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
@@ -45,8 +46,12 @@ body{
     font-size: larger;
     font-weight: 600;
     text-align: center;
-    color: rgb(62, 62, 64);
+    color: white;
+    background-color: rgba(0, 0, 2, 0.9);
     
+}
+#subscriberInputName{
+    border-radius: 50px;
 }
 #start_conversation:hover, #connect:hover,#send:hover{
     border: solid yellow 2px;
@@ -65,7 +70,7 @@ a{
     position: absolute;
     min-height: 2em;
     max-width: 2em;  
-    top: calc(2%);
+    top: calc(0.1%);
     left:calc(2%);
 }
 
@@ -77,7 +82,8 @@ a{
 
 .main{
     
-    margin-top: calc(4%);
+    
+    margin-top: calc(2%);
     display: grid;
     grid-template-areas:    "display display display display display sidebar"
                             "display display display display display sidebar"
@@ -92,7 +98,7 @@ a{
     align-self: flex-start;
     max-width: calc(98%);
     height: calc(70vh);
-    border: solid black;
+    border: solid rgba(0, 0, 0, 0);
     border-radius: 10px;
     margin: 2px;
     overflow-y: scroll;
@@ -104,11 +110,10 @@ a{
     width: calc(98%);
     height: calc(70vh);
     grid-area: display;
-    
     border-radius: 10px;
     margin: 2px;
-    border: solid rgba(0, 0, 0, 0.494) ;
-    padding: calc(40px) calc(20px);
+    border: solid rgba(0, 0, 0, 0) ;
+    padding: calc(40px) calc(50px);
     color: black;
 
     display: flex;
@@ -122,7 +127,7 @@ a{
     text-align: left;
     border: solid 1px rgb(196, 220, 18);
     padding: 4px;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 2px 2px 8px rgb(48, 48, 48);
     border-radius: 10px;
     word-wrap:break-word;
     max-width: calc(80%);
@@ -133,7 +138,7 @@ a{
     align-self: flex-start;
     border: solid 1px rgb(0, 227, 247);
     padding: 4px;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 2px 2px 8px rgb(48, 48, 48);
     border-radius: 10px;
     max-width: fit-content;
     text-align: right;
@@ -155,23 +160,25 @@ a{
     gap: calc(2%);
 }
 #send{
-    height:calc(80%);
+    height:2.5em;
     min-width: calc(8%);
-    border-radius: 10px;
+    border-radius: 50px;
     
 }
 #msg{
     width: calc(90%);
-    height: calc(80%);
-    border-radius: 10px;
+    height: 2.5em;
+    border-radius: 50px;
     background-color: transparent;
+    border:none;
+    border: solid rgba(0, 0, 0, 0.5) 2px;
 }
 button{
-    background-color: transparent;
+    background-color: rgba(0, 0, 10, 0);
     border: solid rgba(0, 0, 139, 0.083) 1px;
     box-shadow: 1px 2px 4px rgba(84, 84, 84, 0.342);
-    border-radius: 10px;
-    color: rgb(3, 3, 4);
+    border-radius: 50px;
+    color: rgba(0, 0, 70, 0.685);
 }
 #members{
     color: rgb(0, 0, 0);
@@ -186,8 +193,13 @@ button{
 }
 .members{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+    box-shadow: none;
+    height: 2.5em;
+}
+.members > :nth-child(2){
+    margin-left: 10%;
 }
 .circle{
     height: 10px;
