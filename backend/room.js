@@ -60,9 +60,11 @@ setInterval(async ()=>{
 },100)
 
 try{
-    document.getElementById("send").onclick =async()=> {  
+    document.getElementById("send").onclick = async()=> {  
         //
-        await sendMessage()
+        await sendMessage();
+        await getDisscusionFrom();
+        await getDisscusionTo();
         
         
     };
@@ -149,8 +151,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         latestMsg = getMsg();
         document.getElementById('msg').value = "";
         console.log("the latest msg ================== ",latestMsg)
-        await getDisscusionFrom();
-        await getDisscusionTo();
+
         
         
     } catch (error) {
