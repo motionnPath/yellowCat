@@ -71,7 +71,8 @@ try{
 }
 
 
-
+getDisscusionFrom();
+getDisscusionTo();
 
 
 
@@ -149,13 +150,14 @@ async function sendMessage(/*_from,_to,_msg*/){
         latestMsg = getMsg();
         document.getElementById('msg').value = "";
         console.log("the latest msg ================== ",latestMsg)
-        await getDisscusionFrom();
-        await getDisscusionTo();
+        
         
         
     } catch (error) {
         console.log('error =====',error)
     }
+    await getDisscusionFrom();
+    await getDisscusionTo();
     
     } else {
         connectButton.innerHTML = "Please install MetaMask"
