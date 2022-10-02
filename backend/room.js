@@ -190,11 +190,11 @@ async function getDisscusionFrom(){
         // this is to avoid keep sending the same last mail
         let element = document.getElementById("from").value
         
-        if(final_msg.includes("undefined") || [element].includes(latestMsg)){
+        if(final_msg.includes("undefined") || [element].includes(final_msg)){
             document.getElementById('from').innerHTML += "";
            
         }else{
-            document.getElementById('from').innerHTML +=`<div> ${final_msg} </div>`
+            document.getElementById('display_it').innerHTML +=`<div id="from"> ${final_msg} </div>`
         }
         
     } catch (error) {
@@ -228,11 +228,11 @@ async function getDisscusionTo(){
         let final_msg = msg[l-1];
         let element = document.getElementById("to").value
         
-        if(final_msg.includes("undefined")|| [to].includes(latestMsg)){
+        if(final_msg.includes("undefined")|| [to].includes(final_msg)){
             document.getElementById('to').innerHTML += "";
             
         }else{
-            document.getElementById('to').innerHTML +=`<div> ${final_msg} </div>`
+            document.getElementById('display_it').innerHTML +=`<div id="to"> ${final_msg} </div>`
         }
         
     
