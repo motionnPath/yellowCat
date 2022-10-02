@@ -63,9 +63,6 @@ try{
     document.getElementById("send").onclick = async()=> {  
         //
         await sendMessage();
-        await getDisscusionFrom();
-        await getDisscusionTo();
-        
         
     };
 }catch(e){
@@ -144,19 +141,22 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait()
-        //await getDisscusionFrom();
-        //await getDisscusionTo();
+        await getDisscusionFrom();
+        await getDisscusionTo();
 
         console.log(signerName,"sending a message to ",currentDiscussionPartner)
         latestMsg = getMsg();
         document.getElementById('msg').value = "";
         console.log("the latest msg ================== ",latestMsg)
+        
 
         
         
     } catch (error) {
         console.log('error =====',error)
     }
+    await getDisscusionFrom();
+    await getDisscusionTo();
     
     
     } else {
