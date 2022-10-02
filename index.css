@@ -214,3 +214,6 @@ input{
     border-bottom: solid 2px black;
     
 }
+#avatar{
+    height: 40px;
+}
