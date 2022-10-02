@@ -122,7 +122,7 @@ a{
     overflow-y: scroll;
     
 }
-.from{
+#from{
     align-self: flex-start;
     text-align: left;
     border: solid 1px rgb(196, 220, 18);
@@ -134,7 +134,7 @@ a{
     
     
 }
-.to{
+#to{
     align-self: flex-start;
     border: solid 1px rgb(0, 227, 247);
     padding: 4px;
