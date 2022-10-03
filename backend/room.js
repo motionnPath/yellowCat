@@ -146,6 +146,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         contract.on("sended", async(msg)=>{
             
             console.log(" the event was fired and msg is been sent =",msg);
+            latestMsg = msg;
             await getDisscusionFrom();
             await getDisscusionTo();
 
@@ -154,7 +155,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         
 
         console.log(signerName,"sending a message to ",currentDiscussionPartner)
-        latestMsg = getMsg();
+        
         document.getElementById('msg').value = "";
         console.log("the latest msg ================== ",latestMsg)
         
@@ -194,9 +195,14 @@ async function getDisscusionFrom(){
    
         let final_msg = msg[l-1];
         // this is to avoid keep sending the same last mail
-        
-      
+        let disscussion = document.getElementById('display_it').valueOf().innerText.split('\n');
+        if(!disscussion.includes(final_msg)){
             document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
+        }else{
+            document.getElementById('display_it').innerHTML +=`<div class="from"> ${""} </div>`
+        }
+      
+            
        
         
     } catch (error) {
@@ -228,11 +234,16 @@ async function getDisscusionTo(){
         let l= msg.length;
    
         let final_msg = msg[l-1];
-        
-        
+
+        let disscussion = document.getElementById('display_it').valueOf().innerText.split('\n');
+        if(!disscussion.includes(final_msg)){
+            document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
+        }else{
+            document.getElementById('display_it').innerHTML +=`<div class="to">${""} </div>`
+        }
             
         
-            document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
+            
         
         
     
