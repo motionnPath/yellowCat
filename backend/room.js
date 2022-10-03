@@ -195,18 +195,9 @@ async function getDisscusionFrom(){
    
         let final_msg = msg[l-1];
         // this is to avoid keep sending the same last mail
-        document.getElementById('display_it').innerHTML +=`<div class="from"></div>`
-        try{
-            let disscussionLenght = document.getElementsByClassName('from').length;
-            let lastDiscussionItem = document.getElementsByClassName('from').item(disscussionLenght-1).valueOf().innerText
-            if(lastDiscussionItem !== final_msg){
-                document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
-            }else{
-                document.getElementById('display_it').innerHTML +=`<div class="from"></div>`
-            }
-        }catch{
-
-        }
+        document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
+       
+           
       
             
        
@@ -241,20 +232,9 @@ async function getDisscusionTo(){
    
         let final_msg = msg[l-1];
 
-        document.getElementById('display_it').innerHTML +=`<div class="to"></div>`;
-
-        try{
-            let disscussionLenght = document.getElementsByClassName('to').length;
-            let lastDiscussionItem = document.getElementsByClassName('to').item(disscussionLenght-1).valueOf().innerText
-            
-            if(lastDiscussionItem !== final_msg){
-                document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
-            }else{
-                document.getElementById('display_it').innerHTML +=`<div class="to"></div>`
-            }
-        }catch{
-            
-        }
+        
+        document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
+          
             
         
             
