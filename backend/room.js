@@ -60,9 +60,10 @@ setInterval(async ()=>{
 },100)
 
 try{
-    document.getElementById("send").onclick = async()=> {  
+    document.getElementById("send").onclick =async()=> {  
         //
-        await sendMessage();
+        await sendMessage()
+        
         
     };
 }catch(e){
@@ -75,7 +76,7 @@ try{
 
 
 // working perfectly !! 
-async function getMembers(){
+export async function getMembers(){
 
     if (typeof window.ethereum !== "undefined") {
 
@@ -98,7 +99,7 @@ async function getMembers(){
             document.getElementById('members').innerHTML += `
             <button class="members" >
                     <img id=${members[i]} src="./avatar.png" id="avatar"> <h3> ${members[i]} </h3>
-                </button>
+            </button>
             ` 
             
         }
@@ -141,23 +142,27 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait()
-        await getDisscusionFrom();
-        await getDisscusionTo();
+
+        contract.on("sended", async(msg)=>{
+            
+            console.log(" the event was fired and msg is been sent =",msg);
+            await getDisscusionFrom();
+            await getDisscusionTo();
+
+        })
+        
+        
 
         console.log(signerName,"sending a message to ",currentDiscussionPartner)
         latestMsg = getMsg();
         document.getElementById('msg').value = "";
         console.log("the latest msg ================== ",latestMsg)
         
-
         
         
     } catch (error) {
         console.log('error =====',error)
     }
-    await getDisscusionFrom();
-    await getDisscusionTo();
-    
     
     } else {
         connectButton.innerHTML = "Please install MetaMask"
@@ -191,8 +196,8 @@ async function getDisscusionFrom(){
         // this is to avoid keep sending the same last mail
         
       
-        document.getElementById('display_it').innerHTML +=`<div id="from"> ${final_msg} </div>`
-        
+            document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
+       
         
     } catch (error) {
         console.log('error =====',error)
@@ -223,8 +228,11 @@ async function getDisscusionTo(){
         let l= msg.length;
    
         let final_msg = msg[l-1];
-       
-        document.getElementById('display_it').innerHTML +=`<div id="to"> ${final_msg} </div>`
+        
+        
+            
+        
+            document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
         
         
     
@@ -235,5 +243,7 @@ async function getDisscusionTo(){
         connectButton.innerHTML = "Please install MetaMask"
     }
 }
+
+
 
 
