@@ -179,7 +179,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         let signerName = await contract.addrToName(signerAddr)
 
         // set the last msg:
-         
+         console.log(signerName,"sending msg to",currentDiscussionPartner)
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait();
@@ -187,7 +187,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         document.getElementById('msg').value = "";
          
 
-        contract.once("sended", async(msg)=>{
+        contract.on("sended", async(msg)=>{
 
             await updateUi(msg);
             
@@ -230,7 +230,8 @@ async function updateUi(msg){
 
             let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
             
-            document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> <div id="timestampFrom">${result}</div>` 
+            document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> 
+            <div id="timestampFrom">${result}</div>` 
         }
     })
     msg_to[0].map( async(u,v) =>{
@@ -239,7 +240,8 @@ async function updateUi(msg){
 
             let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
 
-            document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> <div id="timestampTo">${result}</div>`
+            document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> 
+            <div id="timestampTo">${result}</div>`
             
         }
     })
