@@ -242,7 +242,7 @@ async function sendMessage(/*_from,_to,_msg*/){
                     document.getElementById('display_it').innerHTML +=`<div class="from"> ${u[0]} </div> <div id="timestampFrom">${u[1]}</div>`
                 } 
             });
-            msg_to.map(async()=>{
+            msg_to.map(async(u)=>{
 
                 if(u[1] >= await contract.getTime()){
                     document.getElementById('display_it').innerHTML +=`<div class="to"> ${u[0]} </div> <div id="timestampTo">${u[1]}</div>`
