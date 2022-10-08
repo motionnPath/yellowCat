@@ -89,15 +89,12 @@ setInterval(async ()=>{
                     element.style.border = 'blue 4px solid';
                     element.style.borderRadius = "50px";
                     
-                    
-                    
                 }else{
                     element.style.color = 'black';
                     element.style.height = "2.5em"
                     element.style.filter = "invert()"
                     element.style.border = 'white 2px solid';
                     element.style.borderRadius = "50px";
-                    
                 }
 
         }
@@ -183,24 +180,22 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         // set the last msg:
          
-        console.log(signerName," is sending msg to",currentDiscussionPartner);
+
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait();
 
+        document.getElementById('msg').value = "";
+         
 
-        let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
-        let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
+        contract.once("sended", async(msg)=>{
 
-
-        contract.on("sended",async(msg)=>{
-
-            
             await updateUi(msg);
             
-        })
-        document.getElementById('msg').value = "";
+
+        })       
+        
     } catch (error) {
-        //console.log('error =====',error)
+  
     }
     
     } else {
@@ -210,52 +205,45 @@ async function sendMessage(/*_from,_to,_msg*/){
 }
 
 async function updateUi(msg){
+
+    console.log("update ui was triggered with msg = ", msg);
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send('eth_requestAccounts', [])
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(contractAddress, abi, signer)
+
+    let signerAddr = await signer.getAddress()
+    let signerName = await contract.addrToName(signerAddr)
+
+    let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
+    let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
+
     
 
-        console.log('hello from update ui !!! msg = ',msg)
 
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        await provider.send('eth_requestAccounts', [])
-        const signer = provider.getSigner()
-        const contract = new ethers.Contract(contractAddress, abi, signer)
 
-        let signerAddr = await signer.getAddress()
-        let signerName = await contract.addrToName(signerAddr)
+    msg_from[0].map(async(u,v) =>{
 
-        let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
-        let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
-        console.log("msg_from = ",msg_from)
-        console.log("msg_to = ",msg_to)
+        if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
 
-        msg_from[0].map( async(u,v) => {
-                 
-                
-                
-            if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
-                document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
-            } 
+            let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
             
-        });
-        msg_to[0].map(async(u,v)=>{
+            document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> <div id="timestampFrom">${result}</div>` 
+        }
+    })
+    msg_to[0].map( async(u,v) =>{
 
-           
-            if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
-                document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
-            }
+        if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
+
+            let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
+
+            document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> <div id="timestampTo">${result}</div>`
             
+        }
+    })
 
-        });
-
-
-
-
-
-
-        
-        
-   
-    
 
 }
 
