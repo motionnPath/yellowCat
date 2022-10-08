@@ -203,7 +203,7 @@ async function sendMessage(/*_from,_to,_msg*/){
             console.log("tigger is msg", msg)
 
             document.getElementById('display_it').innerHTML +=`<div> ${"this is a test of ui"} </div>`
-            msg_from[0].map( async(u,v) => {
+            await msg_from[0].map( async(u,v) => {
                  
                 
                 
@@ -212,7 +212,7 @@ async function sendMessage(/*_from,_to,_msg*/){
                 } 
                 
             });
-            msg_to[0].map(async(u,v)=>{
+            await msg_to[0].map(async(u,v)=>{
     
                 //console.log("u = ",u)
                 //console.log(`parseInt(msg_from[1][${v}].toString())`,parseInt(msg_from[1][v].toString()) )
