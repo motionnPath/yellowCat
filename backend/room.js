@@ -187,7 +187,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         document.getElementById('msg').value = "";
          
 
-        contract.on("sended", async(msg)=>{
+        contract.once("sended", async(msg)=>{
 
             await updateUi(msg);
             
