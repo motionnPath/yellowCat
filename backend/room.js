@@ -184,15 +184,13 @@ async function sendMessage(/*_from,_to,_msg*/){
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait();
 
-        document.getElementById('msg').value = "";
-         
-
         contract.on("sended", async(msg)=>{
 
             await updateUi(msg);
             
 
-        })       
+        }) 
+        document.getElementById('msg').value = "";      
         
     } catch (error) {
   
@@ -219,29 +217,25 @@ async function updateUi(msg){
     let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
     let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
-    
-
-
-
     msg_from[0].map(async(u,v) =>{
 
 
         if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
 
-            //let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
+            let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
             
             document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> 
-            <div id="timestampFrom">${"result"}</div>` 
+            <div id="timestampFrom">${result}</div>` 
         }
     })
     msg_to[0].map( async(u,v) =>{
 
         if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
 
-            //let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
+            let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
 
             document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> 
-            <div id="timestampTo">${"result"}</div>`
+            <div id="timestampTo">${result}</div>`
             
         }
     })
