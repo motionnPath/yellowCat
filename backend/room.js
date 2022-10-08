@@ -228,20 +228,20 @@ async function updateUi(msg){
 
         if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
 
-            let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
+            //let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
             
             document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> 
-            <div id="timestampFrom">${result}</div>` 
+            <div id="timestampFrom">${"result"}</div>` 
         }
     })
     msg_to[0].map( async(u,v) =>{
 
         if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
 
-            let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
+            //let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
 
             document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> 
-            <div id="timestampTo">${result}</div>`
+            <div id="timestampTo">${"result"}</div>`
             
         }
     })
