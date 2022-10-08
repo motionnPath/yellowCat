@@ -194,23 +194,11 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         contract.on("sended",async(msg)=>{
 
-            console.log("tigger is msg", msg)
+            
+            await updateUi(msg);
             
         })
-
-
-        
         document.getElementById('msg').value = "";
-        
-         
-
-
-        
-
-        
-        
-        
-        
     } catch (error) {
         //console.log('error =====',error)
     }
@@ -221,7 +209,52 @@ async function sendMessage(/*_from,_to,_msg*/){
 
 }
 
+async function updateUi(msg){
+    
 
+        console.log('hello from update ui !!! msg = ',msg)
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        await provider.send('eth_requestAccounts', [])
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(contractAddress, abi, signer)
+
+        let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
+        let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
+
+        console.log("msg_from = ",msg_from)
+        console.log("msg_to = ",msg_to)
+
+        msg_from[0].map( async(u,v) => {
+                 
+                
+                
+            if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
+                document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
+            } 
+            
+        });
+        msg_to[0].map(async(u,v)=>{
+
+           
+            if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
+                document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
+            }
+            
+
+        });
+
+
+
+
+
+
+        
+        
+   
+    
+
+}
 
 
 
