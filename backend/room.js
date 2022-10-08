@@ -187,7 +187,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         document.getElementById('msg').value = "";
          
 
-        contract.once("sended", async(msg)=>{
+        contract.on("sended", async(msg)=>{
 
             await updateUi(msg);
             
@@ -216,8 +216,8 @@ async function updateUi(msg){
     let signerAddr = await signer.getAddress()
     let signerName = await contract.addrToName(signerAddr)
 
-    let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
-    let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
+    let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
+    let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
     
 
