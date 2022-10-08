@@ -194,31 +194,34 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         
         document.getElementById('msg').value = "";
-        msg_from[0].map( async(u,v) => {
-                 
-                
-                
-            if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
-                document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
-            } 
-            
-        });
-        msg_to[0].map(async(u,v)=>{
-
-            //console.log("u = ",u)
-            //console.log(`parseInt(msg_from[1][${v}].toString())`,parseInt(msg_from[1][v].toString()) )
-            if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
-                document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
-            }
-            
-
-        });
+        
          
 
 
-        contract.once("sended",async()=>{
+        contract.once("sended",async(msg)=>{
+
+            console.log("tigger is msg", msg)
 
             document.getElementById('display_it').innerHTML +=`<div> ${"this is a test of ui"} </div>`
+            msg_from[0].map( async(u,v) => {
+                 
+                
+                
+                if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
+                } 
+                
+            });
+            msg_to[0].map(async(u,v)=>{
+    
+                //console.log("u = ",u)
+                //console.log(`parseInt(msg_from[1][${v}].toString())`,parseInt(msg_from[1][v].toString()) )
+                if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
+                }
+                
+    
+            });
 
             
             
