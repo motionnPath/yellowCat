@@ -223,6 +223,14 @@ async function sendMessage(/*_from,_to,_msg*/){
     
             });
 
+            for(let i=0; i<msg_from[0].length;i++){
+
+                if(parseInt(msg_from[1][i].toString()) >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${msg_from[0][i]} </div> <div id="timestampFrom">${parseInt(msg_from[1][i].toString())}</div>`
+                } 
+
+            }
+
             
             
         })
