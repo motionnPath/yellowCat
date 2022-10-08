@@ -4,6 +4,49 @@ import { ethers } from "../ethers-5.6.esm.min.js";
 let listOfmembers = [];
 let latestMsg = "";
 
+const sortedDisscussion = (input_list) =>{
+
+    console.log("original list = ",input_list);
+
+    // this part extracts the time stamps from the list
+    let x = [];
+    for(let i=0; i<input_list.length; i++){
+        x.push(input_list[i][1])
+    }
+    // this part sorts the list of nums
+    const func = (a,b) =>{
+        return a-b;
+    }
+    let result = x.sort(func,[])
+
+    // this part suppose to get list of index 
+
+    let list_of_index = [];
+
+    for(let j=0; j<result.length; j++){
+
+        for(let k=0; k<input_list.length; k++){
+
+            if(input_list[k][1] == result[j]){
+                list_of_index.push(k)
+            }
+        }
+    }
+    console.log("--------------------")
+    // this part suppose to sort the list 
+    //according to time stamp klein to gross
+
+    let final_list= [];
+
+    for(let i=0; i< list_of_index.length; i++){
+        final_list[i] = input_list[list_of_index[i]];
+    }
+    console.log("final list =", final_list)
+
+    return final_list;
+
+}
+
 
 
 
@@ -20,7 +63,7 @@ for(let i=0; i<l; i++){
 
             currentDiscussionPartner = e.target.id;
 
-            console.log(currentDiscussionPartner)
+            //console.log(currentDiscussionPartner)
             //testing this 
 
         }
@@ -46,12 +89,15 @@ setInterval(async ()=>{
                     element.style.border = 'blue 4px solid';
                     element.style.borderRadius = "50px";
                     
+                    
+                    
                 }else{
                     element.style.color = 'black';
                     element.style.height = "2.5em"
                     element.style.filter = "invert()"
                     element.style.border = 'white 2px solid';
                     element.style.borderRadius = "50px";
+                    
                 }
 
         }
@@ -80,7 +126,7 @@ export async function getMembers(){
 
     if (typeof window.ethereum !== "undefined") {
 
-        console.log("waiting for room member ...")
+        //console.log("waiting for room member ...")
 
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         await provider.send('eth_requestAccounts', [])
@@ -91,7 +137,7 @@ export async function getMembers(){
     try {
         
         let members = await contract.getMembers();
-        console.log(members)
+        //console.log(members)
         let len = members.length;
         for(let i = 0; i< len; i++){
 
@@ -106,15 +152,13 @@ export async function getMembers(){
         
        
     } catch (error) {
-        console.log(error)
+        //console.log(error)
       }
     } else {
         connectButton.innerHTML = "Please install MetaMask"
     }
 
 }
-
-
 
 function getMsg(){
     return document.getElementById("msg").value;
@@ -123,10 +167,10 @@ function getMsg(){
 // this is working perfectly!!
 async function sendMessage(/*_from,_to,_msg*/){
 
+    //document.getElementById('display_it').innerHTML = ""
+
     if (typeof window.ethereum !== "undefined") {
 
-        
-        
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         await provider.send('eth_requestAccounts', [])
         const signer = provider.getSigner()
@@ -141,28 +185,59 @@ async function sendMessage(/*_from,_to,_msg*/){
          
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
-        await tx.wait()
+        await tx.wait();
+        // this part should be on chain 
+        let full_conversation =[];
+        //full_conversation.push(getMsg());
+        // ---------------------------------------------
+
+        let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
+        let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
+
+        
+        document.getElementById('msg').value = "";
+         
 
         contract.on("sended", async(msg)=>{
+
+            console.log("this is msg from index 0= ", msg_from[0][0]);
+            console.log("this is msg from index 1= ", msg_from[1][0].toString());
+
+            for(let i=0; i<msg_from[0].length; i++){
+                full_conversation.push([msg_from[0][i],parseInt(msg_from[1][i].toString())])
+
+            }
+            for(let i=0; i<msg_to[0].length; i++){
+                full_conversation.push([msg_to[0][i],parseInt(msg_to[1][i].toString())])
+
+            }
+
+            console.log("das ist full conversation origin",full_conversation)
+
+            sortedDisscussion(full_conversation).map( async(u) => {
+                
+                if(msg_from[0].includes(u[0]) && u[1] >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u[0]} </div> <div id="timestampFrom">${u[1]}</div>`
+                }else if(msg_to[0].includes(u[0]) && u[1] >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u[0]} </div> <div id="timestampTo">${u[1]}</div>`
+                }
+                
+                
+            })
             
-            console.log(" the event was fired and msg is been sent =",msg);
-            latestMsg = msg;
-            await getDisscusionFrom();
-            await getDisscusionTo();
 
         })
         
         
 
-        console.log(signerName,"sending a message to ",currentDiscussionPartner)
+        //console.log(signerName,"sending a message to ",currentDiscussionPartner)
         
-        document.getElementById('msg').value = "";
-        console.log("the latest msg ================== ",latestMsg)
+        //console.log("the latest msg ================== ",latestMsg)
         
         
         
     } catch (error) {
-        console.log('error =====',error)
+        //console.log('error =====',error)
     }
     
     } else {
@@ -173,81 +248,6 @@ async function sendMessage(/*_from,_to,_msg*/){
 
 // solidity fct: getFullConversation(string memory _from,string memory _to)
 
-async function getDisscusionFrom(){
-    if (typeof window.ethereum !== "undefined") {
-
-        console.log("getting discussion ...")
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        await provider.send('eth_requestAccounts', [])
-        const signer = provider.getSigner()
-        const contract = new ethers.Contract(contractAddress, abi, signer)
-    
-    try {
-        let signerAddr  = await signer.getAddress();
-        let signerName  = await contract.addrToName(signerAddr)
-        let msg         = await contract.getFullConversation(signerName,currentDiscussionPartner); 
-        
-        console.log("msg from =", await msg)
-     
-        // muss geandert werden
-        let l= msg.length;
-   
-        let final_msg = msg[l-1];
-        // this is to avoid keep sending the same last mail
-        document.getElementById('display_it').innerHTML +=`<div class="from"> ${final_msg} </div>`
-       
-           
-      
-            
-       
-        
-    } catch (error) {
-        console.log('error =====',error)
-      }
-    } else {
-        connectButton.innerHTML = "Please install MetaMask"
-    }
-}
-async function getDisscusionTo(){
-
-    if (typeof window.ethereum !== "undefined") {
-
-        console.log("getting discussion to ...")
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        await provider.send('eth_requestAccounts', [])
-        const signer = provider.getSigner()
-        const contract = new ethers.Contract(contractAddress, abi, signer)
-    
-    try {
-        let signerAddr  = await signer.getAddress();
-        let signerName  = await contract.addrToName(signerAddr)
-        let msg         = await contract.getFullConversation(currentDiscussionPartner,signerName); //reverted
-        
-        console.log("msg to =", await msg)
-     
-        // muss geandert werden
-        let l= msg.length;
-   
-        let final_msg = msg[l-1];
-
-        
-        document.getElementById('display_it').innerHTML +=`<div class="to"> ${final_msg} </div>`
-          
-            
-        
-            
-        
-        
-    
-    } catch (error) {
-        console.log('error =====',error)
-      }
-    } else {
-        connectButton.innerHTML = "Please install MetaMask"
-    }
-}
 
 
 

@@ -182,13 +182,14 @@ button{
 }
 #members{
     color: rgb(0, 0, 0);
+    
     text-decoration: none;
     list-style: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    row-gap: 1em;
+    row-gap: 0.5em;
     
 }
 .members{
@@ -197,9 +198,13 @@ button{
     align-items: center;
     box-shadow: none;
     height: 2.5em;
+    border: none;
 }
 .members > :nth-child(2){
     margin-left: 10%;
+}
+.members > :nth-child(1){
+    margin-left: 0%;
 }
 .circle{
     height: 10px;
@@ -213,4 +218,9 @@ input{
     background-color: transparent;
     border-bottom: solid 2px black;
     
+}
+#timestampFrom{
+    color: brown;
+    font-size: 22px;
+    margin-top: 10px;
 }
