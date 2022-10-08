@@ -192,48 +192,20 @@ async function sendMessage(/*_from,_to,_msg*/){
         let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
 
+        contract.on("sended",async(msg)=>{
+
+            console.log("tigger is msg", msg)
+            
+        })
+
+
         
         document.getElementById('msg').value = "";
         
          
 
 
-        contract.once("sended",async(msg)=>{
-
-            console.log("tigger is msg", msg)
-
-            document.getElementById('display_it').innerHTML +=`<div> ${"this is a test of ui"} </div>`
-            await msg_from[0].map( async(u,v) => {
-                 
-                
-                
-                if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
-                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
-                } 
-                
-            });
-            await msg_to[0].map(async(u,v)=>{
-    
-                //console.log("u = ",u)
-                //console.log(`parseInt(msg_from[1][${v}].toString())`,parseInt(msg_from[1][v].toString()) )
-                if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
-                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
-                }
-                
-    
-            });
-
-            for(let i=0; i<msg_from[0].length;i++){
-
-                if(parseInt(msg_from[1][i].toString()) >= await contract.getTime()){
-                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${msg_from[0][i]} </div> <div id="timestampFrom">${parseInt(msg_from[1][i].toString())}</div>`
-                } 
-
-            }
-
-            
-            
-        })
+        
 
         
         
