@@ -232,21 +232,27 @@ async function sendMessage(/*_from,_to,_msg*/){
             })
         }) 
         */
+    
         contract.on("sended",async()=>{
 
-            console.log("hello from the event listner")
+            console.log("msg from =",msg_from)
 
-            msg_from.map( async(u) => {
-                
-                if(u[1] >= await contract.getTime()){
-                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u[0]} </div> <div id="timestampFrom">${u[1]}</div>`
+            msg_from[0].map( async(u,v) => {
+                 
+                console.log("u = ",u)
+                console.log(`parseInt(msg_from[1][${v}].toString())`,parseInt(msg_from[1][v].toString()) )
+                if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u} </div> <div id="timestampFrom">${parseInt(msg_from[1][v].toString())}</div>`
                 } 
+                
             });
-            msg_to.map(async(u)=>{
+            msg_to[0].map(async(u,v)=>{
 
-                if(u[1] >= await contract.getTime()){
-                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u[0]} </div> <div id="timestampTo">${u[1]}</div>`
+                
+                if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u} </div> <div id="timestampTo">${parseInt(msg_to[1][v].toString())}</div>`
                 }
+                
 
             });
             
