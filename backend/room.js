@@ -183,7 +183,7 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         // set the last msg:
          
-
+        console.log(signerName," is sending msg to",currentDiscussionPartner);
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait();
         // this part should be on chain 
@@ -194,14 +194,15 @@ async function sendMessage(/*_from,_to,_msg*/){
         let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
         let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
 
+
         
         document.getElementById('msg').value = "";
          
 
         contract.on("sended", async(msg)=>{
 
-            console.log("this is msg from index 0= ", msg_from[0][0]);
-            console.log("this is msg from index 1= ", msg_from[1][0].toString());
+            //console.log("this is msg from index 0= ", msg_from[0][0]);
+            //console.log("this is msg from index 1= ", msg_from[1][0].toString());
 
             for(let i=0; i<msg_from[0].length; i++){
                 full_conversation.push([msg_from[0][i],parseInt(msg_from[1][i].toString())])
@@ -212,13 +213,14 @@ async function sendMessage(/*_from,_to,_msg*/){
 
             }
 
-            console.log("das ist full conversation origin",full_conversation)
-
+            
+            console.log("sorted full disscussion", sortedDisscussion(full_conversation))
             sortedDisscussion(full_conversation).map( async(u) => {
                 
                 if(msg_from[0].includes(u[0]) && u[1] >= await contract.getTime()){
                     document.getElementById('display_it').innerHTML +=`<div class="from"> ${u[0]} </div> <div id="timestampFrom">${u[1]}</div>`
-                }else if(msg_to[0].includes(u[0]) && u[1] >= await contract.getTime()){
+                }
+                if(msg_to[0].includes(u[0]) && u[1] >= await contract.getTime()){
                     document.getElementById('display_it').innerHTML +=`<div class="to"> ${u[0]} </div> <div id="timestampTo">${u[1]}</div>`
                 }
                 
