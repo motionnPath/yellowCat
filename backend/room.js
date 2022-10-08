@@ -221,6 +221,8 @@ async function sendMessage(/*_from,_to,_msg*/){
         })
         contract.on("sended",async()=>{
 
+            console.log("hello from the event listner")
+
             sortedDisscussion(full_conversation).map( async(u) => {
                 
                 if(msg_from[0].includes(u[0]) && u[1] >= await contract.getTime()){
