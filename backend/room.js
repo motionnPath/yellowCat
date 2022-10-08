@@ -204,7 +204,7 @@ async function sendMessage(/*_from,_to,_msg*/){
 
 async function updateUi(msg){
 
-    console.log("update ui was triggered with msg = ", msg);
+    console.log("event listner was  triggered with msg = ", msg);
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     await provider.send('eth_requestAccounts', [])
