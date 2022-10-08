@@ -191,8 +191,8 @@ async function sendMessage(/*_from,_to,_msg*/){
         //full_conversation.push(getMsg());
         // ---------------------------------------------
 
-        let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
-        let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
+        let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
+        let msg_to = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
 
         
@@ -215,6 +215,12 @@ async function sendMessage(/*_from,_to,_msg*/){
 
             
             console.log("sorted full disscussion", sortedDisscussion(full_conversation))
+            
+            
+
+        })
+        contract.on("sended",async()=>{
+
             sortedDisscussion(full_conversation).map( async(u) => {
                 
                 if(msg_from[0].includes(u[0]) && u[1] >= await contract.getTime()){
@@ -226,10 +232,7 @@ async function sendMessage(/*_from,_to,_msg*/){
                 
                 
             })
-            
-
         })
-        
         
 
         //console.log(signerName,"sending a message to ",currentDiscussionPartner)
