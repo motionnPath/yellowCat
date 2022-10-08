@@ -199,7 +199,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         document.getElementById('msg').value = "";
          
 
-        contract.on("sended", async(msg)=>{
+        {/*contract.on("sended", async(msg)=>{
 
             //console.log("this is msg from index 0= ", msg_from[0][0]);
             //console.log("this is msg from index 1= ", msg_from[1][0].toString());
@@ -212,14 +212,10 @@ async function sendMessage(/*_from,_to,_msg*/){
                 full_conversation.push([msg_to[0][i],parseInt(msg_to[1][i].toString())])
 
             }
-
-            
             console.log("sorted full disscussion", sortedDisscussion(full_conversation))
-            
-            
-
         })
-        contract.on("sended",async()=>{
+     */}
+        /*contract.on("sended",async()=>{
 
             console.log("hello from the event listner")
 
@@ -234,8 +230,27 @@ async function sendMessage(/*_from,_to,_msg*/){
                 
                 
             })
+        }) 
+        */
+        contract.on("sended",async()=>{
+
+            console.log("hello from the event listner")
+
+            msg_from.map( async(u) => {
+                
+                if(u[1] >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="from"> ${u[0]} </div> <div id="timestampFrom">${u[1]}</div>`
+                } 
+            });
+            msg_to.map(async()=>{
+
+                if(u[1] >= await contract.getTime()){
+                    document.getElementById('display_it').innerHTML +=`<div class="to"> ${u[0]} </div> <div id="timestampTo">${u[1]}</div>`
+                }
+
+            });
+            
         })
-        
 
         //console.log(signerName,"sending a message to ",currentDiscussionPartner)
         
