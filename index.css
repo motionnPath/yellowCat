@@ -228,5 +228,7 @@ input{
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
     font-size: 12px;
     margin-top: 10px;
+    position: relative;
+    right: 0px;
 
 }
