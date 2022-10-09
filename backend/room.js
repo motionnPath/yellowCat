@@ -184,7 +184,7 @@ async function sendMessage(/*_from,_to,_msg*/){
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
         await tx.wait();
 
-        contract.once("sended", async(msg)=>{
+        contract.on("sended", async(msg)=>{
 
             await updateUi(msg);
             
