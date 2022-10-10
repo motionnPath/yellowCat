@@ -2,7 +2,7 @@ import {abi,contractAddress} from "../constants.js";
 import { ethers } from "../ethers-5.6.esm.min.js";
 
 let listOfmembers = [];
-let latestMsg = "";
+let counter = 0;
 
 const sortedDisscussion = (input_list) =>{
 
@@ -189,8 +189,15 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         contract.on("sended", async()=>{
 
+            counter ++;
+            console.log("counter = ",counter)
             await updateUi();
-            contract.removeAllListeners("sended")
+            if(counter == 2){
+                counter = 1;
+                contract.removeAllListeners("sended")
+
+            }
+            
             
 
         })       
