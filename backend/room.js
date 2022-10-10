@@ -179,10 +179,10 @@ async function sendMessage(/*_from,_to,_msg*/){
         let signerName = await contract.addrToName(signerAddr)
 
         // set the last msg:
-         
+        console.log(signerName,"is sending to ",currentDiscussionPartner)
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
-        await tx.wait(1);
+        await tx.wait();
 
         document.getElementById('msg').value = "";
          
