@@ -2,6 +2,7 @@
     scrollbar-width: none;
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
 
 }
 ::-webkit-scrollbar {
@@ -13,8 +14,8 @@ body{
 
     background-color: rgba(84, 84, 84, 0.224);
     color: white;
-    filter:contrast(0.6);
-    filter: brightness(1.4);
+    filter:contrast(0.4);
+    filter: brightness(0.9);
 }
 .main_container{
     background: url(./img/undraw_friends_online_re_r7pq.svg) center repeat;
@@ -104,6 +105,7 @@ a{
     overflow-y: scroll;
 }
 .display{
+    
     background: url("./img/undraw_playful_cat_re_ac9g.svg") center no-repeat;
     background-size: 20em;
     align-self: flex-start;
@@ -118,33 +120,46 @@ a{
 
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 24px;
     overflow-y: scroll;
     
 }
+
 .from{
+    
+    color: rgba(34, 34, 34, 0.877);
     align-self: flex-start;
     text-align: left;
     border: solid 1px rgb(196, 220, 18);
-    padding: 4px;
-    box-shadow: 2px 2px 8px rgb(48, 48, 48);
-    border-radius: 10px;
+    
+    box-shadow: 2px 2px 8px rgba(48, 48, 48, 0.678);
+    border-radius: 8px;
     word-wrap:break-word;
     max-width: calc(80%);
+    padding: 4px 20px;
+    transition: 0.8s ease-in;
+
+    font-weight: 600;
     
     
 }
 .to{
+    
+    color: rgba(34, 34, 34, 0.877);
     align-self: flex-start;
     border: solid 1px rgb(0, 227, 247);
-    padding: 4px;
-    box-shadow: 2px 2px 8px rgb(48, 48, 48);
-    border-radius: 10px;
+   
+    box-shadow: 2px 2px 8px rgba(48, 48, 48, 0.678);
+    border-radius: 12px;
     max-width: fit-content;
     text-align: right;
     align-self: flex-end;
     word-wrap:break-word;
     max-width: calc(80%);
+    padding: 4px 20px;
+    transition: 0.8s ease-in;
+
+    font-weight: 600;
     
 }
 .chat {
@@ -216,10 +231,11 @@ input{
 }
 #timestampFrom{
 
-    color: brown;
+    color: rgb(66, 66, 66);
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
     font-size: 12px;
-    margin-top: 10px;
+    
+
     
 }
 #timestampTo{
@@ -227,8 +243,13 @@ input{
     color: brown;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
     font-size: 12px;
-    margin-top: 10px;
-    position: relative;
-    right: 0px;
+    
 
+}
+
+.msgWrapper {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    column-gap: 1em;
 }

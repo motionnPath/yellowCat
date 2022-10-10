@@ -164,7 +164,7 @@ function getMsg(){
 // this is working perfectly!!
 async function sendMessage(/*_from,_to,_msg*/){
 
-    //document.getElementById('display_it').innerHTML = ""
+ 
 
     if (typeof window.ethereum !== "undefined") {
 
@@ -179,18 +179,22 @@ async function sendMessage(/*_from,_to,_msg*/){
         let signerName = await contract.addrToName(signerAddr)
 
         // set the last msg:
-         console.log(signerName,"sending msg to",currentDiscussionPartner)
+         
 
         let tx = await contract.sendMessage(signerName,currentDiscussionPartner,getMsg());
-        await tx.wait();
+        await tx.wait(1);
 
-        contract.on("sended", async(msg)=>{
+        document.getElementById('msg').value = "";
+         
 
-            await updateUi(msg);
+        contract.on("sended", async()=>{
+
+            await updateUi();
+            contract.removeAllListeners("sended")
             
 
-        }) 
-        document.getElementById('msg').value = "";      
+        })       
+        
         
     } catch (error) {
   
@@ -202,9 +206,9 @@ async function sendMessage(/*_from,_to,_msg*/){
 
 }
 
-async function updateUi(msg){
+async function updateUi(){
 
-    console.log("event listner was  triggered with msg = ", msg);
+    console.log("the ui was triggered .... ");
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     await provider.send('eth_requestAccounts', [])
@@ -214,9 +218,10 @@ async function updateUi(msg){
     let signerAddr = await signer.getAddress()
     let signerName = await contract.addrToName(signerAddr)
 
-    let msg_from = await contract.getFullConversation(signerName,currentDiscussionPartner);
-    let msg_to   = await contract.getFullConversation(currentDiscussionPartner,signerName);
+    let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
+    let msg_to= await contract.getFullConversation(currentDiscussionPartner,signerName);
 
+    
     msg_from[0].map(async(u,v) =>{
 
 
@@ -224,8 +229,12 @@ async function updateUi(msg){
 
             let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
             
-            document.getElementById("display_it").innerHTML += `<div class="from">${msg_from[0][v]}</div> 
-            <div id="timestampFrom">${result}</div>` 
+            document.getElementById("display_it").innerHTML += `
+                
+                <div class = "msgWrapper">
+                    <div class="from">${msg_from[0][v]}</div> 
+                    <div id="timestampFrom">${result}</div>
+                </div>` 
         }
     })
     msg_to[0].map( async(u,v) =>{
@@ -234,12 +243,19 @@ async function updateUi(msg){
 
             let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
 
-            document.getElementById("display_it").innerHTML += `<div class="to">${msg_to[0][v]} </div> 
-            <div id="timestampTo">${result}</div>`
+            document.getElementById("display_it").innerHTML += `
+                
+                <div class = "msgWrapper">
+
+                    <div id="timestampTo">${result}</div>
+                    <div class="to">${msg_to[0][v]} </div> 
+                    
+                </div>`
             
         }
     })
 
+    
 
 }
 
