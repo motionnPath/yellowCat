@@ -12,6 +12,7 @@ let listOfmembers = [];
 await getMembers();
 
 
+
 let l = listOfmembers.length;
 
 let currentDiscussionPartner = "";  
@@ -32,8 +33,12 @@ for(let i=0; i<l; i++){
 }
 
 
+
+
     
 setInterval(async ()=>{
+
+    
     
     for(let i=0; i<listOfmembers.length; i++){
 
@@ -204,21 +209,19 @@ async function updateFrom(){
     let msg_from= await contract.getFullConversation(signerName,currentDiscussionPartner);
 
 
+    let len = msg_from[0].length -1
+    let result = new Date(parseInt(msg_from[1][len].toString()) * 1000).toISOString().slice(11, 19);
     
-    msg_from[0].map(async(u,v) =>{
+    document.getElementById("display_it").innerHTML = `
+        <div class="from">${msg_from[0][len]}</div>
+        <div id="timestampFrom>${result}</div>`
+    
 
-
-        if(parseInt(msg_from[1][v].toString()) >= await contract.getTime()){
-
-            let result = new Date(parseInt(msg_from[1][v].toString()) * 1000).toISOString().slice(11, 19);
-            let len = msg_from[0].length -1
             
-            document.getElementById("display_it").innerHTML = `
-                <div class="from">${msg_from[0][len]}</div>
-                <div id="timestampFrom>${result}</div>`
 
-        }
-    })
+
+        
+    
     
 
 }
@@ -238,19 +241,13 @@ async function updateTo(){
   
     let msg_to = await contract.getFullConversation(currentDiscussionPartner,signerName);
 
-    msg_to[0].map( async(u,v) =>{
-
-        if(parseInt(msg_to[1][v].toString()) >= await contract.getTime()){
-
-            let result = new Date(parseInt(msg_to[1][v].toString()) * 1000).toISOString().slice(11, 19);
-            let len = msg_to[0].length -1
+    
+    let len = msg_to[0].length -1
+    let result = new Date(parseInt(msg_to[1][len].toString()) * 1000).toISOString().slice(11, 19);
             
-            document.getElementById("display_it").innerHTML = `
-                <div class="to">${msg_to[0][len]}</div>
-                <div id="timestampTo>${result}</div>`
-
-        }
-    })
+    document.getElementById("display_it").innerHTML = `
+        <div class="to">${msg_to[0][len]}</div>
+        <div id="timestampTo>${result}</div>`
 
 }
 
