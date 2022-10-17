@@ -126,7 +126,7 @@ a{
     
 }
 
-.from{
+#from{
     
     color: rgba(34, 34, 34, 0.877);
     align-self: flex-start;
@@ -144,7 +144,7 @@ a{
     
     
 }
-.to{
+#to{
     
     color: rgba(34, 34, 34, 0.877);
     align-self: flex-start;
@@ -235,8 +235,8 @@ input{
 }
 #timestampFrom{
 
-    color: rgb(66, 66, 66);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
+    color: brown;
+    
     font-size: 12px;
     
 
@@ -245,7 +245,7 @@ input{
 #timestampTo{
 
     color: brown;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
+    
     font-size: 12px;
     
 

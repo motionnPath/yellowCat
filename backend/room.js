@@ -32,7 +32,11 @@ for(let i=0; i<l; i++){
     
 }
 
-
+setInterval(async ()=>{
+    await updateFrom();
+    await updateTo();
+    updateTheBalance();
+},2000)
 
 
     
@@ -176,9 +180,12 @@ async function sendMessage(/*_from,_to,_msg*/){
 
         contract.on("sended", async()=>{
 
+            
+            
             await updateFrom();
             await updateTo();
-            //contract.removeAllListeners("sended")
+            
+            
             
 
         })       
@@ -212,16 +219,9 @@ async function updateFrom(){
     let len = msg_from[0].length -1
     let result = new Date(parseInt(msg_from[1][len].toString()) * 1000).toISOString().slice(11, 19);
     
-    document.getElementById("display_it").innerHTML = `
-        <div class="from">${msg_from[0][len]}</div>
-        <div id="timestampFrom>${result}</div>`
-    
-
-            
-
-
-        
-    
+    document.getElementById("from").innerHTML = `
+        <div>${msg_from[0][len]}<div id="timestampFrom">${result}</div></div>
+        `
     
 
 }
@@ -245,9 +245,9 @@ async function updateTo(){
     let len = msg_to[0].length -1
     let result = new Date(parseInt(msg_to[1][len].toString()) * 1000).toISOString().slice(11, 19);
             
-    document.getElementById("display_it").innerHTML = `
-        <div class="to">${msg_to[0][len]}</div>
-        <div id="timestampTo>${result}</div>`
+    document.getElementById("to").innerHTML = `
+        <div>${msg_to[0][len]} <div id="timestampTo">${result}</div></div>
+        `
 
 }
 
@@ -319,11 +319,21 @@ async function transferFunds(){
         document.getElementById("fundAmount").value = 0;
     })
     
-    
-
-
 }
 
 
 
+async function updateTheBalance(){
 
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send('eth_requestAccounts', [])
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(contractAddress, abi, signer)
+
+    let signerAddr = await signer.getAddress()
+    let signerName = await contract.addrToName(signerAddr)
+
+    let myAmount = (await contract.getBalance(signerName)).toString();
+    document.getElementById("balance").innerHTML = `<div>${myAmount} </div>`
+
+}
