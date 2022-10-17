@@ -1,8 +1,49 @@
-//export const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-//export const contractAddress = "0x91CCC3cdD6D3914D4dbeB07C41C9e05E28687e6e" // polygoon
-// export const contractAddress = "0xB53b80aeeB602f1132D0d94Ba2DB2D32F9EfcAB1"
-export const contractAddress = "0x94aE9C71C377E3baF0cB540a95DA9c1951caaBBF"
+export const contractAddress = "0xdD7BCDc5BC2E8228184C77395EEA07bD95285F92"
 export const abi = [
+  {
+    "inputs": [],
+    "name": "Not_Enough_Fund",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "funded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "fundsTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      }
+    ],
+    "name": "newMember",
+    "type": "event"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -30,6 +71,51 @@ export const abi = [
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fund",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      }
+    ],
+    "name": "getAdrr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      }
+    ],
+    "name": "getBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -141,6 +227,19 @@ export const abi = [
       }
     ],
     "name": "subscribe",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_to",
+        "type": "address"
+      }
+    ],
+    "name": "transferFunds",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"

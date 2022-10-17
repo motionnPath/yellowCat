@@ -2,7 +2,7 @@
     scrollbar-width: none;
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    
+
 
 }
 ::-webkit-scrollbar {
@@ -16,11 +16,12 @@ body{
     color: white;
     filter:contrast(0.4);
     filter: brightness(0.9);
+
 }
 .main_container{
     background: url(./img/undraw_friends_online_re_r7pq.svg) center repeat;
-    background-position: -28px 0;
-    background-size: 800px;
+    background-position: -28px 0px;
+    background-size: 320px;
     filter: blur(0.2px);
     display: flex;
     flex-direction: column;
@@ -41,7 +42,7 @@ body{
     justify-self: center;
     row-gap: 1em;
     align-items:stretch;
-    margin-top: calc(400px);
+    margin: calc(330px) auto;
 }
 #start_conversation, #connect,#subscriberInputName,#subscribe{
     font-size: larger;
@@ -205,13 +206,16 @@ button{
     align-items: stretch;
     row-gap: 1em;
     
+    
 }
 .members{
     display: flex;
     justify-content: left;
     align-items: center;
     box-shadow: none;
-    height: 2.5em;
+    height: 3em;
+    border: none;
+    font-size: 16px;
 }
 .members > :nth-child(2){
     margin-left: 10%;
@@ -252,4 +256,40 @@ input{
     align-items: center;
     justify-items: center;
     column-gap: 1em;
+}
+
+#fund,#transfer {
+    min-width: calc(10%);
+    height: 2.5em;
+}
+#fund:hover,#transfer:hover{
+    border: solid yellow 2px;
+}
+#fundAmount{
+    height: 2.5em;
+    border: none;
+    text-align: center;
+}
+
+.balance {
+    min-width: calc(10%);
+    height: 2.5em;
+
+    background-color: rgba(0, 0, 10, 0);
+    border: solid rgba(0, 0, 139, 0.083) 1px;
+    box-shadow: 1px 2px 4px rgba(84, 84, 84, 0.342);
+    border-radius: 50px;
+  
+    color: brown;
+   
+}
+
+#send,.transferButton,.fundingButton, .balance{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#sendImg, #money, #funding, #wallet{
+    height: 20px;
 }
