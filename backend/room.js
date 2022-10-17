@@ -246,7 +246,7 @@ async function updateTo(){
             let len = msg_to[0].length -1
             
             document.getElementById("display_it").innerHTML = `
-                <div class="to">${msg_from[0][len]}</div>
+                <div class="to">${msg_to[0][len]}</div>
                 <div id="timestampTo>${result}</div>`
 
         }
